@@ -9,6 +9,10 @@ This is a Kotlin Multiplatform project targeting Desktop (JVM).
     Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
     folder is the appropriate location.
 
+### Services
+
+Complete the Firebase data in the Google service file
+
 ### Build and Run Desktop (JVM) Application
 
 To build and run the development version of the desktop app, use the run configuration from the run widget
