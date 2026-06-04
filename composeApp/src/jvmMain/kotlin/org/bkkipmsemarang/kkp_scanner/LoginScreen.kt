@@ -157,6 +157,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                             }
 
                             if (!querySnapshot.isEmpty) {
+                                SessionManager.saveLoginSession(rememberMe)
                                 onLoginSuccess()
                             } else {
                                 errorMessage = "Email atau password salah."

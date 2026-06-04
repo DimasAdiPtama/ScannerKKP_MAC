@@ -499,7 +499,7 @@ suspend fun updateFirestoreStatus(code: String): ScanSuccessData {
              // 4. Extract data for UI
              val queueNo = snapshot.get("queueNo")?.toString() ?: "-"
              val time = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss")) + " WIB"
-             val location = if (collectionName == "CustomerService") "Gedung Mina Bahari IV" else if (collectionName == "SMKHP") "Gedung Mina Bahari IV" else collectionName
+             val location = if (collectionName == "CustomerService") "BPPMHKP Semarang" else if (collectionName == "SMKHP") "BPPMHKP Semarang" else collectionName
 
              return@withContext ScanSuccessData(queueNo, time, location)
         } else {

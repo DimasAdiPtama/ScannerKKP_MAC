@@ -15,14 +15,19 @@ enum class Screen {
 @Preview
 fun App() {
     MaterialTheme {
-        var currentScreen by remember { mutableStateOf(Screen.LOGIN) }
+        var currentScreen by remember { 
+            mutableStateOf(if (SessionManager.isLoggedIn()) Screen.DASHBOARD else Screen.LOGIN) 
+        }
 
         Crossfade(targetState = currentScreen) { screen ->
             when (screen) {
                 Screen.LOGIN -> LoginScreen(onLoginSuccess = { currentScreen = Screen.DASHBOARD })
                 Screen.DASHBOARD -> DashboardScreen(
                     onScanClick = { currentScreen = Screen.SCAN_QR },
-                    onLogout = { currentScreen = Screen.LOGIN }
+                    onLogout = { 
+                        SessionManager.clearSession()
+                        currentScreen = Screen.LOGIN 
+                    }
                 )
                 Screen.SCAN_QR -> QRScanScreen(onBack = { currentScreen = Screen.DASHBOARD })
             }
