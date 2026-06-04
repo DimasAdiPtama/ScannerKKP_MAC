@@ -3,7 +3,7 @@ name: Build Windows Installer
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch: # Memungkinkan Anda menjalankan build secara manual dari web GitHub
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -21,11 +21,16 @@ jobs:
           cache: 'gradle'
 
       - name: Build MSI Installer
+        shell: bash
         run: |
+          # Buat folder jika belum ada (menggunakan shell bash agar -p berfungsi)
           mkdir -p composeApp/src/jvmMain/resources
+          
+          # Tulis file secret ke lokasi yang tepat
           echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > composeApp/src/jvmMain/resources/service-account.json
+          
+          # Jalankan build
           ./gradlew :composeApp:packageMsi
-
 
       - name: Upload Windows MSI
         uses: actions/upload-artifact@v4
