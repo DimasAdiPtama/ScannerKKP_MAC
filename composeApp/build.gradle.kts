@@ -45,11 +45,16 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.bkkipmsemarang.kkp_scanner"
+            packageName = "KKPScanner"
             packageVersion = "1.0.0"
+            description = "Scanner KKP Application"
+            copyright = "© 2024 Kementerian Kelautan dan Perikanan"
             
             windows {
                 iconFile.set(project.file("src/jvmMain/resources/icon.ico"))
+                shortcut = true
+                menu = true
+                menuGroup = "Kementerian Kelautan dan Perikanan"
             }
         }
     }

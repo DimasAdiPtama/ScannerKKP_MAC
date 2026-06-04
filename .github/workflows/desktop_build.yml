@@ -20,17 +20,16 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Build MSI Installer
+      - name: Create Service Account File
         shell: bash
         run: |
-          # Buat folder jika belum ada (menggunakan shell bash agar -p berfungsi)
           mkdir -p composeApp/src/jvmMain/resources
-          
-          # Tulis file secret ke lokasi yang tepat
-          echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > composeApp/src/jvmMain/resources/service-account.json
-          
-          # Jalankan build
-          ./gradlew :composeApp:packageMsi
+          cat <<EOF > composeApp/src/jvmMain/resources/service-account.json
+          ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          EOF
+
+      - name: Build MSI Installer
+        run: ./gradlew :composeApp:packageMsi
 
       - name: Upload Windows MSI
         uses: actions/upload-artifact@v4
