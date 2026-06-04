@@ -7,6 +7,9 @@ xcuserdata
 local.properties
 .idea
 .DS_Store
+# Firebase Secret
+composeApp/src/jvmMain/resources/service-account.json
+
 captures
 .externalNativeBuild
 .cxx

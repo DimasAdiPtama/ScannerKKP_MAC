@@ -41,20 +41,34 @@ fun main() {
     }
 
     try {
-        println("Initializing application...")
-        val serviceAccount: InputStream? = object {}.javaClass.getResourceAsStream("/service-account.json")
-        if (serviceAccount != null) {
+        println("--- Firebase Initialization Start ---")
+        val resourceName = "service-account.json"
+        
+        // Coba beberapa cara untuk memuat resource
+        val serviceAccount: InputStream? = 
+            Thread.currentThread().contextClassLoader.getResourceAsStream(resourceName)
+            ?: object {}.javaClass.getResourceAsStream("/$resourceName")
+            ?: object {}.javaClass.classLoader.getResourceAsStream(resourceName)
+        
+        if (serviceAccount == null) {
+            println("ERROR: File $resourceName TIDAK DITEMUKAN di classpath!")
+            println("Pastikan file ada di folder resources dan build ulang project.")
+        } else {
             val options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build()
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options)
-                println("Firebase initialized successfully.")
+                println("SUCCESS: Firebase initialized successfully for project: ${options.projectId}")
+            } else {
+                println("INFO: Firebase already initialized.")
             }
         }
+        println("--- Firebase Initialization End ---")
     } catch (e: Exception) {
-        println("Initialization error: ${e.message}")
+        println("FATAL ERROR during Firebase Init: ${e.message}")
+        e.printStackTrace()
     }
 
     application {
