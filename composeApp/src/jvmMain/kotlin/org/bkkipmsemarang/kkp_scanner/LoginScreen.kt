@@ -148,21 +148,29 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                     scope.launch {
                         try {
                             val db = FirestoreManager.db
+                            val cleanEmail = username.trim() // Menghapus spasi di awal/akhir
+                            val cleanPassword = password.trim()
+
+                            println("Melakukan login untuk: $cleanEmail")
+
                             val querySnapshot = withContext(Dispatchers.IO) {
-                                db.collection("ScannerUser") // Nama collection sesuai gambar
-                                    .whereEqualTo("email", username) // Field email sesuai gambar
-                                    .whereEqualTo("Password", password) // Field Password sesuai gambar
+                                db.collection("ScannerUser")
+                                    .whereEqualTo("email", cleanEmail)
+                                    .whereEqualTo("Password", cleanPassword)
                                     .get()
                                     .get()
                             }
 
                             if (!querySnapshot.isEmpty) {
+                                println("Login Berhasil!")
                                 SessionManager.saveLoginSession(rememberMe)
                                 onLoginSuccess()
                             } else {
+                                println("Login Gagal: Data tidak ditemukan di koleksi ScannerUser")
                                 errorMessage = "Email atau password salah."
                             }
                         } catch (e: Exception) {
+                            println("Error saat login: ${e.message}")
                             e.printStackTrace()
                             errorMessage = "Terjadi kesalahan: ${e.message}"
                         } finally {
